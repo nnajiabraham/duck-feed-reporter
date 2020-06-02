@@ -1,8 +1,8 @@
-import { Button, MenuItem } from "@material-ui/core";
+import { Button, makeStyles, MenuItem } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import TextInput from "../components/TextInput/TextInput";
-import TimeForm from "../components/TimeForm/TimeForm";
+import TimeDateSection from "../components/TimeDateSection/TimeDateSection";
 
 const Form = styled.form`
   margin: 1px;
@@ -10,12 +10,19 @@ const Form = styled.form`
   margin-left: 30px;
   margin-right: 30px;
   display: flex;
-  height: 70%;
+  min-height: 70%;
   flex-direction: column;
   justify-content: space-between;
 `;
 
+const useStyles = makeStyles({
+  button: {
+    marginTop: 20,
+  },
+});
+
 const DuckForm = () => {
+  const classes = useStyles();
   const foodTypes: { value: string; label: string }[] = [
     {
       value: "Wet Food",
@@ -34,15 +41,22 @@ const DuckForm = () => {
   };
 
   return (
-    <Form noValidate autoComplete="off">
+    <Form autoComplete="off">
       <TextInput id="name" label="Name" size={"small"} variant={"standard"} />
-      <TextInput id="email" label="Email" size={"small"} variant="standard" />
+      <TextInput
+        id="email"
+        label="Email"
+        type={"email"}
+        size={"small"}
+        variant="standard"
+      />
 
       <TextInput
         id="ducksCount"
         label="No. Of Ducks Fed"
         size={"small"}
         variant={"standard"}
+        type={"number"}
       />
       <TextInput
         id="duckLocation"
@@ -72,12 +86,18 @@ const DuckForm = () => {
       </TextInput>
       <TextInput
         id="foodQuantity"
-        label="Food Quantity"
+        type="number"
+        label="Food Quantity(kg)"
         size={"small"}
         variant={"standard"}
       />
-      <TimeForm />
-      <Button variant="contained" color="secondary" disabled fullWidth>
+      <TimeDateSection />
+      <Button
+        className={classes.button}
+        variant="contained"
+        color="secondary"
+        fullWidth
+      >
         Submit
       </Button>
     </Form>

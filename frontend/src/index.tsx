@@ -6,7 +6,7 @@ import * as serviceWorker from "./serviceWorker";
 
 const Wrapper = styled.div`
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   background-color: #040b13;
   display: flex;
   flex-direction: column;
