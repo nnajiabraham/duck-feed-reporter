@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Header from "../components/Header/Header";
+import DuckForm from "./DuckForm";
 
 const Container = styled.div`
   height: 100%;
@@ -12,6 +13,7 @@ const App = () => {
   return (
     <Container>
       <Header />
+      <DuckForm />
     </Container>
   );
 };
