@@ -14,11 +14,29 @@ const Section = styled.div`
   margin-top: 30px;
 `;
 
-const TimeForm = () => {
+export interface TimeFormState {
+  time: string;
+  date: string;
+  recurringEvent: boolean;
+}
+interface TimeFormProps {
+  onChange?: (state: TimeFormState) => void;
+}
+const TimeForm: React.FC<TimeFormProps> = ({ onChange }) => {
   const [inputTime, setInputTime] = React.useState<string>("12:00");
   const [date, setDate] = React.useState<string>("2020-12-25");
 
   const [recurringState, setRecurringState] = React.useState(false);
+
+  React.useEffect(() => {
+    onChange &&
+      onChange({
+        time: inputTime,
+        date,
+        recurringEvent: recurringState,
+      });
+    // eslint-disable-next-line
+  }, [date, recurringState, inputTime]);
 
   const handleRecurringChange = (_: React.ChangeEvent<HTMLInputElement>) => {
     setRecurringState(!recurringState);

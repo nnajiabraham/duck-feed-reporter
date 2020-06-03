@@ -47,12 +47,12 @@ const GlobalStyle = createGlobalStyle`
 
 const Application = () => {
   return (
-    <React.StrictMode>
+    <>
       <GlobalStyle />
       <Wrapper>
         <App />
       </Wrapper>
-    </React.StrictMode>
+    </>
   );
 };
 
