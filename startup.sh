@@ -1,3 +1,3 @@
 #!/bin/bash
 
-cd infrastruture && docker-compose up
+cd infrastruture && docker-compose up --build
