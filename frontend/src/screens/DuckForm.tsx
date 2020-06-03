@@ -10,7 +10,6 @@ import {
 import moment from "moment";
 import React from "react";
 import styled from "styled-components";
-import { getAPIURL } from "../api/api";
 import TextInput from "../components/TextInput/TextInput";
 import TimeDateSection, {
   TimeFormState,
@@ -93,8 +92,8 @@ const DuckForm = () => {
     duckLocation: "",
     duckCount: "",
     foodName: "",
-    time: "",
-    date: "",
+    time: "12:00",
+    date: "2020-12-25",
     recurringEvent: false,
   };
 
@@ -113,7 +112,10 @@ const DuckForm = () => {
   );
 
   React.useEffect(() => {
-    const removeSuccessMessage = () => setShowSuccesMessage(false);
+    const removeSuccessMessage = () => {
+      setShowSuccesMessage(false);
+      setSubmitSuccess(undefined);
+    };
     if (submitSuccess) {
       setShowSuccesMessage(true);
       setTimeout(removeSuccessMessage, 4000);
@@ -175,7 +177,7 @@ const DuckForm = () => {
         time: Number(time),
         foodQuantity: Number(formState.foodQuantity),
       };
-      const resp = await fetch(getAPIURL(), {
+      const resp = await fetch("http://localhost:7000/report", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
