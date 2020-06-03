@@ -5,7 +5,7 @@ export class ReportTime {
   @PrimaryGeneratedColumn('uuid')
   reportTimeId: string;
 
-  @Column()
+  @Column({ type: 'bigint' })
   feedTime: number;
 
   @Column()

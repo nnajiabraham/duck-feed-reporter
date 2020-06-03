@@ -29,9 +29,6 @@ export class Report {
   @Column()
   foodQuantity: number;
 
-  @Column()
-  reportDate: string;
-
   @OneToOne(
     () => ReportTime,
     reportTime => reportTime.reportTimeId,

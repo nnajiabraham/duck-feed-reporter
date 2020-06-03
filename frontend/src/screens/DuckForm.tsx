@@ -7,8 +7,10 @@ import {
   MenuItem,
   Select,
 } from "@material-ui/core";
+import moment from "moment";
 import React from "react";
 import styled from "styled-components";
+import { getAPIURL } from "../api/api";
 import TextInput from "../components/TextInput/TextInput";
 import TimeDateSection, {
   TimeFormState,
@@ -25,7 +27,7 @@ const Form = styled.form`
   justify-content: space-between;
 `;
 
-const ErrorMessage = styled.p`
+const StatusMessage = styled.p`
   color: red;
   font-size: 12px;
   text-align: center;
@@ -40,16 +42,35 @@ const useStyles = makeStyles({
 
 const DuckForm = () => {
   const classes = useStyles();
+
+  enum FoodType {
+    WET_FOOD = "WET_FOOD",
+    DRY_FOOD = "DRY_FOOD",
+  }
+
   const foodTypes: { value: string; label: string }[] = [
     {
-      value: "WET_FOOD",
+      value: FoodType.WET_FOOD,
       label: "Wet Food",
     },
     {
-      value: "DRY_FOOD",
+      value: FoodType.DRY_FOOD,
       label: "Dry Food",
     },
   ];
+
+  interface IPayload {
+    name: string;
+    email: string;
+    foodType: string;
+    foodQuantity: number;
+    duckLocation: string;
+    duckCount: number;
+    foodName: string;
+    time: number;
+    date: string;
+    recurringEvent: boolean;
+  }
 
   interface IFormState {
     name: string;
@@ -87,6 +108,17 @@ const DuckForm = () => {
     undefined
   );
   const [tryAgain, setTryAgain] = React.useState<boolean>(false);
+  const [showSuccesMessage, setShowSuccesMessage] = React.useState<boolean>(
+    false
+  );
+
+  React.useEffect(() => {
+    const removeSuccessMessage = () => setShowSuccesMessage(false);
+    if (submitSuccess) {
+      setShowSuccesMessage(true);
+      setTimeout(removeSuccessMessage, 4000);
+    }
+  }, [submitSuccess]);
 
   const handleChange = (key: string) => (
     event: React.ChangeEvent<HTMLInputElement>
@@ -132,18 +164,31 @@ const DuckForm = () => {
     setSubmitted(true);
 
     try {
-      const resp = await fetch("http://localhost:7000/report", {
+      const dateTime = new Date(`${formState.date} ${formState.time}:00`);
+      const time = moment(dateTime, "YYYY-MM-DD HH:mm:ss").valueOf();
+
+      console.log("datetime", dateTime);
+      console.log("time epoch", time);
+      const payload: IPayload = {
+        ...formState,
+        duckCount: Number(formState.duckCount),
+        time: Number(time),
+        foodQuantity: Number(formState.foodQuantity),
+      };
+      const resp = await fetch(getAPIURL(), {
         method: "POST",
-        body: JSON.stringify(formState),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
 
       if (!resp.ok) {
-        throw Error("An err occured");
+        throw Error("An err occurred");
       }
 
-      setSubmitSuccess(true);
+      setFormState(defaultFormState);
       setSubmitted(false);
       setTryAgain(false);
+      setSubmitSuccess(true);
     } catch (error) {
       setSubmitSuccess(false);
       setSubmitted(false);
@@ -154,8 +199,9 @@ const DuckForm = () => {
   return (
     <Form autoComplete="off" noValidate>
       {formError && (
-        <ErrorMessage>Please fill all required fields</ErrorMessage>
+        <StatusMessage>Please fill all required fields</StatusMessage>
       )}
+      {showSuccesMessage && <StatusMessage>Form Submitted</StatusMessage>}
       <TextInput
         id="name"
         label="Name"
@@ -226,9 +272,10 @@ const DuckForm = () => {
       />
       <TimeDateSection onChange={onTimeChange} />
       {!submitSuccess && tryAgain ? (
-        <ErrorMessage>
-          An error occured submitting please try again
-        </ErrorMessage>
+        <StatusMessage>
+          An error occurred submitting please fill all fields correctly and try
+          again
+        </StatusMessage>
       ) : null}
       <Button
         className={classes.button}

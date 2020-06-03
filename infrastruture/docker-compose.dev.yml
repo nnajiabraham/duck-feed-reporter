@@ -19,9 +19,21 @@ services:
             - "7000:7000"
         build:
             context: ../backend
-            dockerfile: dev.Dockerfile
+            dockerfile: Dockerfile
         restart: on-failure
         container_name: api-server
+        networks:
+            - backend
+    web-server:
+        depends_on: 
+            - api-server
+        ports:
+            - "80:80"
+        build:
+            context: ../frontend
+            dockerfile: Dockerfile
+        restart: on-failure
+        container_name: web-server
         networks:
             - backend
 networks:

@@ -44,10 +44,6 @@ export class CreateReportDTO {
   @IsNotEmpty()
   time: number;
 
-  @IsString()
-  @IsNotEmpty()
-  date: string;
-
   @IsBoolean()
   @IsNotEmpty()
   recurringEvent: boolean;

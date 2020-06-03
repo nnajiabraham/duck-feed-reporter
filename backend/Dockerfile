@@ -7,6 +7,6 @@ COPY . .
 RUN npm install 
 
 
-EXPOSE 3000
+EXPOSE 7000
 # Default command
-CMD ["npm", "start"]
+CMD ["npm", "run", "start:prod"]

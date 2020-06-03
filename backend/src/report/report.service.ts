@@ -30,7 +30,6 @@ export class ReportService {
       newReport.foodName = payload.foodName;
       newReport.foodQuantity = payload.foodQuantity;
       newReport.foodType = payload.foodType;
-      newReport.reportDate = payload.date;
       newReport.user = prevSavedUser;
 
       await this.reportRepo.save(newReport);
@@ -54,7 +53,6 @@ export class ReportService {
     newReport.foodName = payload.foodName;
     newReport.foodQuantity = payload.foodQuantity;
     newReport.foodType = payload.foodType;
-    newReport.reportDate = payload.date;
     newReport.user = newUser;
 
     await this.reportRepo.save(newReport);
@@ -66,6 +64,4 @@ export class ReportService {
 
     return { ...newReport, ...newReportTime };
   }
-
-  private validatePayload = (payload: CreateReportDTO) => {};
 }
