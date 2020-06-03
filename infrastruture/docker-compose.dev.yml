@@ -1,0 +1,29 @@
+version: '3.1'
+services:
+    mysqldb:
+        image: mysql
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        ports:
+            - 3305:3306 
+        environment:
+            MYSQL_ROOT_PASSWORD: some_super_secret_strong_password
+            MYSQL_DATABASE: duck_report
+        container_name: Database
+        networks:
+            - backend
+    api-server:
+        depends_on: 
+            - mysqldb
+        ports:
+            - "7000:7000"
+        build:
+            context: ../backend
+            dockerfile: dev.Dockerfile
+        restart: on-failure
+        container_name: api-server
+        networks:
+            - backend
+networks:
+    backend:
+        driver: "bridge"

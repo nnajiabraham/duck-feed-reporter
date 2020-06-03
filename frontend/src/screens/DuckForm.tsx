@@ -1,5 +1,6 @@
 import {
   Button,
+  CircularProgress,
   FormControl,
   InputLabel,
   makeStyles,
@@ -81,6 +82,11 @@ const DuckForm = () => {
   );
 
   const [formError, setFormError] = React.useState<boolean>(false);
+  const [submitted, setSubmitted] = React.useState<boolean>(false);
+  const [submitSuccess, setSubmitSuccess] = React.useState<boolean | undefined>(
+    undefined
+  );
+  const [tryAgain, setTryAgain] = React.useState<boolean>(false);
 
   const handleChange = (key: string) => (
     event: React.ChangeEvent<HTMLInputElement>
@@ -112,7 +118,7 @@ const DuckForm = () => {
     });
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const formInComplete = Object.values(formState).some(
       (input) => input === ""
     );
@@ -123,7 +129,26 @@ const DuckForm = () => {
     }
 
     setFormError(false);
-    // TODO finish up submit form
+    setSubmitted(true);
+
+    try {
+      const resp = await fetch("http://localhost:7000/report", {
+        method: "POST",
+        body: JSON.stringify(formState),
+      });
+
+      if (!resp.ok) {
+        throw Error("An err occured");
+      }
+
+      setSubmitSuccess(true);
+      setSubmitted(false);
+      setTryAgain(false);
+    } catch (error) {
+      setSubmitSuccess(false);
+      setSubmitted(false);
+      setTryAgain(true);
+    }
   };
 
   return (
@@ -200,6 +225,11 @@ const DuckForm = () => {
         onChangeCapture={handleChange("foodQuantity")}
       />
       <TimeDateSection onChange={onTimeChange} />
+      {!submitSuccess && tryAgain ? (
+        <ErrorMessage>
+          An error occured submitting please try again
+        </ErrorMessage>
+      ) : null}
       <Button
         className={classes.button}
         variant="contained"
@@ -207,7 +237,7 @@ const DuckForm = () => {
         fullWidth
         onClick={onSubmit}
       >
-        Submit
+        {submitted ? <CircularProgress /> : "Submit"}
       </Button>
     </Form>
   );
