@@ -1,7 +1,4 @@
 # Duck-Feed-Reporter
 
-This project is divided into three submodule:
-
-- FrontEnd (Create React App)
-- BackEnd (NestJS)
-- Infrastructure (Terraform)
+This is the infrastructure layer of this application service.
+The `docker-compose.yml` file handles the build for a production service.

@@ -31,5 +31,5 @@ This is the BE for this project which is divided into three submodule:
 
 - FrontEnd (Create React App)
 - BackEnd (NestJS)
-- Infrastructure (Terraform)
+- Infrastructure (Docker)
 ```
