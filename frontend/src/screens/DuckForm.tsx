@@ -85,9 +85,6 @@ const DuckForm = () => {
   const handleChange = (key: string) => (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    console.log("key", key);
-    console.log("value", event.target.value);
-
     setFormState({
       ...formState,
       [key]: event.target.value,
@@ -126,8 +123,7 @@ const DuckForm = () => {
     }
 
     setFormError(false);
-
-    console.log("formSubmitted");
+    // TODO finish up submit form
   };
 
   return (
