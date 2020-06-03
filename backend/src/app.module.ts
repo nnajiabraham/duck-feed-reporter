@@ -11,8 +11,8 @@ import { ReportModule } from './report/report.module';
     ReportModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'mysqldb',
-      port: 3306,
+      host: 'localhost',
+      port: 3305,
       username: 'root',
       password: 'some_super_secret_strong_password',
       database: 'duck_report',

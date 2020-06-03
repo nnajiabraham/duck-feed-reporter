@@ -5,6 +5,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { FoodType } from '../dto/createReport.dto';
 import { ReportTime } from './reportTime.entity';
 import { User } from './user.entity';
 
@@ -20,13 +21,13 @@ export class Report {
   duckLocation: string;
 
   @Column()
-  duckCount: string;
+  duckCount: number;
 
   @Column()
-  foodType: string;
+  foodType: FoodType;
 
   @Column()
-  foodQuantity: string;
+  foodQuantity: number;
 
   @Column()
   reportDate: string;

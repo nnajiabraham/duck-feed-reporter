@@ -1,4 +1,10 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Unique,
+} from 'typeorm';
 import { Report } from './report.entity';
 
 @Entity()
@@ -10,6 +16,7 @@ export class User {
   name: string;
 
   @Column()
+  @Unique(['email'])
   email: string;
 
   @OneToMany(

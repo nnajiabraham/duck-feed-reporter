@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { CreateReportDTO } from './dto/createReport.dto';
 import { Report } from './entities/report.entity';
 import { ReportTime } from './entities/reportTime.entity';
@@ -17,13 +17,38 @@ export class ReportService {
   ) {}
 
   async saveReport(payload: CreateReportDTO) {
+    const prevSavedUser = await this.userRepo.findOne({
+      where: { email: Like(payload.email) },
+    });
+
+    const newReport = new Report();
+    const newReportTime = new ReportTime();
+
+    if (prevSavedUser?.email === payload.email) {
+      newReport.duckCount = payload.duckCount;
+      newReport.duckLocation = payload.duckLocation;
+      newReport.foodName = payload.foodName;
+      newReport.foodQuantity = payload.foodQuantity;
+      newReport.foodType = payload.foodType;
+      newReport.reportDate = payload.date;
+      newReport.user = prevSavedUser;
+
+      await this.reportRepo.save(newReport);
+
+      newReportTime.feedTime = payload.time;
+      newReportTime.isRecurring = payload.recurringEvent;
+
+      await this.reportTimeRepo.save(newReportTime);
+
+      return { ...newReport, ...newReportTime };
+    }
+
     const newUser = new User();
     newUser.name = payload.name;
     newUser.email = payload.email;
 
     await this.userRepo.save(newUser);
 
-    const newReport = new Report();
     newReport.duckCount = payload.duckCount;
     newReport.duckLocation = payload.duckLocation;
     newReport.foodName = payload.foodName;
@@ -34,12 +59,13 @@ export class ReportService {
 
     await this.reportRepo.save(newReport);
 
-    const newReportTime = new ReportTime();
     newReportTime.feedTime = payload.time;
     newReportTime.isRecurring = payload.recurringEvent;
 
     await this.reportTimeRepo.save(newReportTime);
 
-    return { ...newUser, ...newReport, ...newReportTime };
+    return { ...newReport, ...newReportTime };
   }
+
+  private validatePayload = (payload: CreateReportDTO) => {};
 }

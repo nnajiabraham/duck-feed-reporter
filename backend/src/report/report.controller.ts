@@ -3,6 +3,8 @@ import {
   Controller,
   InternalServerErrorException,
   Post,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { CreateReportDTO } from './dto/createReport.dto';
 import { ReportService } from './report.service';
@@ -12,6 +14,7 @@ export class ReportController {
   constructor(private readonly reportService: ReportService) {}
 
   @Post()
+  @UsePipes(new ValidationPipe({ transform: true }))
   async saveReport(@Body() payload: CreateReportDTO) {
     try {
       return await this.reportService.saveReport(payload);

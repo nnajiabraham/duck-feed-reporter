@@ -6,7 +6,7 @@ export class ReportTime {
   reportTimeId: string;
 
   @Column()
-  feedTime: string;
+  feedTime: number;
 
   @Column()
   isRecurring: boolean;

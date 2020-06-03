@@ -42,11 +42,11 @@ const DuckForm = () => {
   const classes = useStyles();
   const foodTypes: { value: string; label: string }[] = [
     {
-      value: "Wet Food",
+      value: "WET_FOOD",
       label: "Wet Food",
     },
     {
-      value: "Dry Food",
+      value: "DRY_FOOD",
       label: "Dry Food",
     },
   ];
