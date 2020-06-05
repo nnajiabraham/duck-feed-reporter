@@ -5,7 +5,7 @@
 To start up application service, ensure you have docker and docker-compose installed and running then
 run in the root directory `sh startup.sh`
 
-To view the live application go here <http://ec2-3-221-142-71.compute-1.amazonaws.com:2080/>
+To view the live application go here <http://ec2-34-226-41-210.compute-1.amazonaws.com:2080/>
 
 ## Project Structure
 
