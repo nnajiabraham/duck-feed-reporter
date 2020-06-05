@@ -180,7 +180,7 @@ const DuckForm = () => {
       const url =
         process.env.NODE_ENV === "development"
           ? "http://localhost:7000/report"
-          : "ec2-34-226-41-210.compute-1.amazonaws.com:7000/report";
+          : "http://ec2-34-226-41-210.compute-1.amazonaws.com:7000/report";
       const resp = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
